@@ -15,7 +15,7 @@ const ServiceModal = ({ isOpen, onClose, onSave, service, categories }) => {
     priceType: 'fixed',
     priceRangeMin: '',
     priceRangeMax: '',
-    taxApplicable: true,
+
     active: true
   });
 
@@ -32,7 +32,6 @@ const ServiceModal = ({ isOpen, onClose, onSave, service, categories }) => {
         priceType: service?.priceRange ? 'range' : 'fixed',
         priceRangeMin: service?.priceRange?.min || '',
         priceRangeMax: service?.priceRange?.max || '',
-        taxApplicable: service?.taxApplicable !== false,
         active: service?.active !== false
       });
     } else {
@@ -45,7 +44,7 @@ const ServiceModal = ({ isOpen, onClose, onSave, service, categories }) => {
         priceType: 'fixed',
         priceRangeMin: '',
         priceRangeMax: '',
-        taxApplicable: true,
+    
         active: true
       });
     }
@@ -215,20 +214,12 @@ const ServiceModal = ({ isOpen, onClose, onSave, service, categories }) => {
               </div>
             )}
 
-            <div className="space-y-3">
-              <Checkbox
-                label="Tax Applicable"
-                description="Apply tax to this service"
-                checked={formData?.taxApplicable}
-                onChange={(e) => handleChange('taxApplicable', e?.target?.checked)}
-              />
-              <Checkbox
-                label="Active Status"
-                description="Service is available for billing"
-                checked={formData?.active}
-                onChange={(e) => handleChange('active', e?.target?.checked)}
-              />
-            </div>
+            <Checkbox
+              label="Active Status"
+              description="Service is available for billing"
+              checked={formData?.active}
+              onChange={(e) => handleChange('active', e?.target?.checked)}
+            />
 
             <div className="flex items-center gap-3 pt-4 border-t border-border">
               <Button
