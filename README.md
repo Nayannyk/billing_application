@@ -40,6 +40,60 @@ npm run build
 
 Output in `build/` directory.
 
+### Create Windows .exe (standalone desktop app)
+
+Uses [Electron](https://www.electronjs.org/) to wrap the web app into a native Windows executable.
+
+#### 1. Install dependencies
+
+```bash
+npm install --save-dev electron electron-builder
+```
+
+#### 2. Create `electron/main.js`
+
+```js
+const { app, BrowserWindow } = require('electron');
+const path = require('path');
+
+let mainWindow;
+
+app.whenReady().then(() => {
+  mainWindow = new BrowserWindow({
+    width: 1280,
+    height: 800,
+    icon: path.join(__dirname, '..', 'public', 'favicon.ico'),
+    webPreferences: { nodeIntegration: false }
+  });
+  mainWindow.loadFile(path.join(__dirname, '..', 'build', 'index.html'));
+  mainWindow.setMenuBarVisibility(false);
+});
+```
+
+#### 3. Add to `package.json`
+
+```json
+"main": "electron/main.js",
+"build": {
+  "appId": "com.hairverse.billing",
+  "productName": "Hairverse Billing",
+  "directories": { "output": "dist" },
+  "files": [ "build/**/*", "electron/**/*", "package.json" ],
+  "win": { "target": "nsis", "icon": "public/favicon.ico" }
+}
+```
+
+#### 4. Build and package
+
+```bash
+npm run build
+npx electron-builder --win
+```
+
+The installer `.exe` will be in `dist/`. Run the installer — no browser needed.
+
+> **Note:** The first run may trigger a Windows SmartScreen warning. Click "More info" → "Run anyway".
+
 ## Login
 
 Default credentials (demo mode):
