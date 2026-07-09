@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+
+const STORAGE_KEY = 'hairverse_customers';
 
 const CustomerContext = createContext(null);
 
@@ -8,8 +10,21 @@ export const useCustomers = () => {
   return ctx;
 };
 
+const loadFromStorage = () => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+};
+
+const saveToStorage = (data) => {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
+};
+
 export const CustomerProvider = ({ children }) => {
-  const [customers, setCustomers] = useState([]);
+  const [customers, setCustomers] = useState(loadFromStorage);
+
+  useEffect(() => { saveToStorage(customers); }, [customers]);
 
   const addCustomer = useCallback((customer) => {
     const newCustomer = {
