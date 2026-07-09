@@ -4,6 +4,8 @@ node_modules
 .vscode/
 .idea/
 
+dist/
+
 # Environment variables (contains secrets)
 .env
 .env.local

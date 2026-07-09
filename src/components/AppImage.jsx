@@ -1,4 +1,5 @@
 import React from 'react';
+import noImageImg from '/assets/images/no_image.png';
 
 function Image({
   src,
@@ -13,7 +14,7 @@ function Image({
       alt={alt}
       className={className}
       onError={(e) => {
-        e.target.src = "/assets/images/no_image.png"
+        e.target.src = noImageImg
       }}
       {...props}
     />

@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
+import LogoImg from '/assets/images/Logo.png';
 
 const BillPreview = ({
   services,
@@ -31,7 +32,7 @@ const BillPreview = ({
       <div className="mb-6 pb-6 border-b border-border">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 rounded-md overflow-hidden bg-white p-1">
-            <img src="/assets/images/Logo.png" alt="Hairverse" className="w-full h-full object-contain" />
+            <img src={LogoImg} alt="Hairverse" className="w-full h-full object-contain" />
           </div>
           <div>
             <h3 className="text-lg font-heading font-semibold text-foreground">

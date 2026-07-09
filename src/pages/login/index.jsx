@@ -4,6 +4,8 @@ import WelcomeMessage from './components/WelcomeMessage';
 import LoginForm from './components/LoginForm';
 import RoleInfoCard from './components/RoleInfoCard';
 import SecurityBadge from './components/SecurityBadge';
+import InstagramImg from '/assets/images/Instagram.png';
+import WhatsAppQrImg from '/assets/images/WhatsApp QR.png';
 
 const Login = () => {
   return (
@@ -21,13 +23,13 @@ const Login = () => {
             <div className="flex items-center justify-center gap-6 flex-wrap">
               <a href="https://instagram.com/hairverse.salon" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 transition-smooth hover:opacity-80">
                 <div className="w-16 h-16 rounded-lg overflow-hidden bg-white p-1">
-                  <img src="/assets/images/Instagram.png" alt="Instagram" className="w-full h-full object-contain" />
+                  <img src={InstagramImg} alt="Instagram" className="w-full h-full object-contain" />
                 </div>
                 <span className="text-xs caption text-muted-foreground">@hairverse.salon</span>
               </a>
               <a href="https://wa.me/917559377506" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 transition-smooth hover:opacity-80">
                 <div className="w-16 h-16 rounded-lg overflow-hidden bg-white p-1">
-                  <img src="/assets/images/WhatsApp QR.png" alt="WhatsApp" className="w-full h-full object-contain" />
+                  <img src={WhatsAppQrImg} alt="WhatsApp" className="w-full h-full object-contain" />
                 </div>
                 <span className="text-xs caption text-muted-foreground">+91 75593 77506</span>
               </a>

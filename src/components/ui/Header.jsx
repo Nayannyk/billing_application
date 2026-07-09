@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from '../AppIcon';
+import LogoImg from '/assets/images/Logo.png';
 
 const Header = ({ user, onLogout }) => {
   const location = useLocation();
@@ -31,7 +32,7 @@ const Header = ({ user, onLogout }) => {
         <div className="flex items-center gap-8">
           <Link to="/billing-dashboard" className="flex items-center gap-3">
             <div className="flex items-center justify-center w-12 h-12 rounded-md bg-white transition-smooth hover:bg-gray-50 overflow-hidden">
-              <img src="/assets/images/Logo.png" alt="Hairverse" className="w-10 h-10 object-contain" />
+              <img src={LogoImg} alt="Hairverse" className="w-10 h-10 object-contain" />
             </div>
             <span className="text-xl font-heading font-semibold text-foreground">
               Hairverse
