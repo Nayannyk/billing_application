@@ -6,15 +6,11 @@ const BillPreview = ({
   services,
   customer,
   subtotal,
-  tax,
   discount,
-  total,
   onRemoveService,
   onUpdateQuantity
 }) => {
-  const taxRate = 8.5; // 8.5% tax rate
-  const calculatedTax = subtotal * taxRate / 100;
-  const calculatedTotal = subtotal + calculatedTax - discount;
+  const calculatedTotal = subtotal - discount;
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-IN', {
@@ -137,12 +133,6 @@ const BillPreview = ({
             <span className="text-muted-foreground">Subtotal</span>
             <span className="text-foreground data-text font-medium">
               {formatCurrency(subtotal)}
-            </span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Tax ({taxRate}%)</span>
-            <span className="text-foreground data-text font-medium">
-              {formatCurrency(calculatedTax)}
             </span>
           </div>
           {discount > 0 &&
