@@ -22,7 +22,7 @@ const WhatsAppModal = ({ isOpen, onClose, customer, billData }) => {
       `${index + 1}. ${service?.name}\n   Qty: ${service?.quantity} × ${formatCurrency(service?.price)} = ${formatCurrency(service?.total)}`
     )?.join('\n\n');
 
-    const totals = `\n\n*Bill Summary:*\nSubtotal: ${formatCurrency(billData?.subtotal)}\nTax (8.5%): ${formatCurrency(billData?.tax)}\n${billData?.discount > 0 ? `Discount: -${formatCurrency(billData?.discount)}\n` : ''}*Total Amount: ${formatCurrency(billData?.total)}*`;
+    const totals = `\n\n*Bill Summary:*\nSubtotal: ${formatCurrency(billData?.subtotal)}\n${billData?.discount > 0 ? `Discount: -${formatCurrency(billData?.discount)}\n` : ''}*Total Amount: ${formatCurrency(billData?.total)}*`;
 
     const footer = `\n\nDate: ${new Date()?.toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}\n\nWe look forward to serving you again!\n\n_Hairverse Unisex Salon_\nNear Tuta Bagicha, Sadar\nNagpur - 440001\n+91 7559377506`;
 
