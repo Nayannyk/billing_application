@@ -60,9 +60,7 @@ const ServiceCard = ({ service, onEdit, onDuplicate, onToggleStatus }) => {
               </div>
             )}
           </div>
-          {service?.taxApplicable && (
-            <span className="caption text-muted-foreground">+ Tax</span>
-          )}
+
         </div>
       </div>
       <div className="flex items-center gap-2 pt-3 border-t border-border">
