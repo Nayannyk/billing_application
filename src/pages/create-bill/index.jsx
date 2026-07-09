@@ -13,8 +13,8 @@ import Icon from '../../components/AppIcon';
 const CreateBill = () => {
   const navigate = useNavigate();
   const [user] = useState({
-    name: 'Alex Morgan',
-    email: 'alex.morgan@salonbill.com',
+    name: 'Sudama Mankar',
+    email: 'sudama@hairverse.in',
     role: 'Manager',
   });
 
@@ -40,40 +40,7 @@ const CreateBill = () => {
 
   const handleCustomerChange = (customerId) => {
     setSelectedCustomer(customerId);
-    const customers = [
-      { 
-        id: 1, 
-        name: 'Sarah Johnson', 
-        phone: '+1 (555) 123-4567', 
-        email: 'sarah.j@email.com',
-      },
-      { 
-        id: 2, 
-        name: 'Michael Chen', 
-        phone: '+1 (555) 234-5678', 
-        email: 'mchen@email.com',
-      },
-      { 
-        id: 3, 
-        name: 'Emily Rodriguez', 
-        phone: '+1 (555) 345-6789', 
-        email: 'emily.r@email.com',
-      },
-      { 
-        id: 4, 
-        name: 'David Thompson', 
-        phone: '+1 (555) 456-7890', 
-        email: 'dthompson@email.com',
-      },
-      { 
-        id: 5, 
-        name: 'Jessica Martinez', 
-        phone: '+1 (555) 567-8901', 
-        email: 'jmartinez@email.com',
-      },
-    ];
-    const customer = customers?.find(c => c?.id?.toString() === customerId);
-    setCustomerData(customer || null);
+    setCustomerData(customerId ? { id: customerId, name: '', phone: '', email: '' } : null);
   };
 
   const handleNewCustomer = (customer) => {
@@ -215,7 +182,7 @@ const CreateBill = () => {
                         </h3>
                         {discount > 0 && (
                           <p className="text-sm caption text-success">
-                            -${discount?.toFixed(2)} discount active
+                            -₹{discount?.toFixed(2)} discount active
                           </p>
                         )}
                       </div>

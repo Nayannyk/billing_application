@@ -31,11 +31,16 @@ const PageTitle = () => {
       description: 'Business intelligence and performance analysis',
       icon: 'BarChart3',
     },
+    '/gallery': {
+      title: 'Gallery',
+      description: 'Salon photos and portfolio',
+      icon: 'Image',
+    },
   };
 
   const currentPage = pageTitles?.[location?.pathname] || {
-    title: 'SalonBill Pro',
-    description: 'Professional salon billing management',
+    title: 'Hairverse',
+    description: 'Professional unisex salon billing management',
     icon: 'Scissors',
   };
 

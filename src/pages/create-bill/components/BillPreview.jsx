@@ -17,39 +17,35 @@ const BillPreview = ({
   const calculatedTotal = subtotal + calculatedTax - discount;
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'INR'
     })?.format(amount);
   };
 
   return (
-    <div className="bg-card rounded-lg shadow-warm-md p-4 md:p-6">
+    <div id="bill-preview" className="bg-card rounded-lg shadow-warm-md p-4 md:p-6">
       <div className="flex items-center gap-3 mb-6">
         <div className="flex items-center justify-center w-10 h-10 rounded-md bg-accent/10">
           <Icon name="FileText" size={20} color="var(--color-accent)" strokeWidth={2} />
         </div>
-        <h2 className="text-lg md:text-xl font-heading font-semibold text-foreground">HairVerse Salon
-
-        </h2>
+        <h2 className="text-lg md:text-xl font-heading font-semibold text-foreground no-print">Bill Preview</h2>
       </div>
       {/* Invoice Header */}
       <div className="mb-6 pb-6 border-b border-border">
         <div className="flex items-center gap-3 mb-4">
-          <div className="flex items-center justify-center w-12 h-12 rounded-md bg-primary/10">
-            <Icon name="Scissors" size={24} color="var(--color-primary)" strokeWidth={2.5} />
+          <div className="w-12 h-12 rounded-md overflow-hidden bg-white p-1">
+            <img src="/assets/images/Logo.png" alt="Hairverse" className="w-full h-full object-contain" />
           </div>
           <div>
             <h3 className="text-lg font-heading font-semibold text-foreground">
-              SalonBill Pro
+              Hairverse
             </h3>
-            <p className="text-sm caption text-muted-foreground">HairVerse Salon
-
-            </p>
+            <p className="text-sm caption text-muted-foreground">Unisex Salon</p>
           </div>
         </div>
         <div className="space-y-1 text-sm caption text-muted-foreground">
-          <p>HairVerse Salon Near Tuta Bagicha</p>
+          <p>Near Tuta Bagicha, Sadar</p>
           <p>Sadar Nagpur -440001</p>
           <p>Phone: +91 7559377506</p>
         </div>
@@ -124,7 +120,7 @@ const BillPreview = ({
                 variant="ghost"
                 size="icon"
                 onClick={() => onRemoveService(index)}
-                className="text-destructive hover:text-destructive hover:bg-destructive/10">
+                className="text-destructive hover:text-destructive hover:bg-destructive/10 no-print">
 
                     <Icon name="Trash2" size={16} />
                   </Button>
@@ -170,7 +166,7 @@ const BillPreview = ({
       {/* Invoice Footer */}
       <div className="mt-6 pt-6 border-t border-border text-center">
         <p className="text-xs caption text-muted-foreground">
-          Thank you for choosing SalonBill Pro!
+          Thank you for choosing Hairverse Unisex Salon!
         </p>
         <p className="text-xs caption text-muted-foreground mt-1">
           Invoice generated on {new Date()?.toLocaleDateString('en-US', {

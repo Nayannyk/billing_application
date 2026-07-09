@@ -8,14 +8,14 @@ const WhatsAppModal = ({ isOpen, onClose, customer, billData }) => {
   const [sending, setSending] = useState(false);
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'INR',
     })?.format(amount);
   };
 
   const generateMessage = () => {
-    const header = `*SalonBill Pro Invoice*\n\n`;
+    const header = `*Hairverse Unisex Salon Invoice*\n\n`;
     const customerInfo = `Dear ${customer?.name || 'Customer'},\n\nThank you for visiting us!\n\n`;
     
     const services = billData?.services?.map((service, index) => 
@@ -24,7 +24,7 @@ const WhatsAppModal = ({ isOpen, onClose, customer, billData }) => {
 
     const totals = `\n\n*Bill Summary:*\nSubtotal: ${formatCurrency(billData?.subtotal)}\nTax (8.5%): ${formatCurrency(billData?.tax)}\n${billData?.discount > 0 ? `Discount: -${formatCurrency(billData?.discount)}\n` : ''}*Total Amount: ${formatCurrency(billData?.total)}*`;
 
-    const footer = `\n\nDate: ${new Date()?.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}\n\nWe look forward to serving you again!\n\n_SalonBill Pro_\n123 Beauty Avenue, Suite 100\nNew York, NY 10001\n+1 (555) 987-6543`;
+    const footer = `\n\nDate: ${new Date()?.toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}\n\nWe look forward to serving you again!\n\n_Hairverse Unisex Salon_\nNear Tuta Bagicha, Sadar\nNagpur - 440001\n+91 7559377506`;
 
     return header + customerInfo + services + totals + footer;
   };

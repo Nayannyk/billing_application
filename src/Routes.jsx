@@ -9,6 +9,7 @@ import Login from './pages/login';
 import CustomerManagement from './pages/customer-management';
 import BillingDashboard from './pages/billing-dashboard';
 import ReportsAnalytics from './pages/reports-analytics';
+import Gallery from './pages/gallery';
 
 const Routes = () => {
   return (
@@ -24,6 +25,7 @@ const Routes = () => {
         <Route path="/customer-management" element={<CustomerManagement />} />
         <Route path="/billing-dashboard" element={<BillingDashboard />} />
         <Route path="/reports-analytics" element={<ReportsAnalytics />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="*" element={<NotFound />} />
       </RouterRoutes>
       </ErrorBoundary>

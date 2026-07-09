@@ -54,7 +54,7 @@ const ImportModal = ({ isOpen, onClose, onImport }) => {
   };
 
   const downloadTemplate = () => {
-    const csvContent = "Service Name,Category,Duration (min),Price (USD),Description\nWomen's Haircut,Hair Care,45,45.00,Standard haircut for women\nMen's Haircut,Hair Care,30,25.00,Standard haircut for men";
+    const csvContent = "Service Name,Category,Duration (min),Price (₹),Description\nWomen's Haircut,Hair Care,45,45.00,Standard haircut for women\nMen's Haircut,Hair Care,30,25.00,Standard haircut for men";
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL?.createObjectURL(blob);
     const a = document.createElement('a');

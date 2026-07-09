@@ -17,9 +17,9 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const mockCredentials = {
-    owner: { email: 'owner@salonbill.com', password: 'Owner@2026', role: 'Owner' },
-    manager: { email: 'manager@salonbill.com', password: 'Manager@2026', role: 'Manager' },
-    staff: { email: 'staff@salonbill.com', password: 'Staff@2026', role: 'Staff' }
+    owner: { email: 'owner@hairverse.in', password: 'Owner@2026', role: 'Owner' },
+    manager: { email: 'sudama@hairverse.in', password: 'Hairverse@2026', role: 'Manager' },
+    staff: { email: 'staff@hairverse.in', password: 'Staff@2026', role: 'Staff' }
   };
 
   const validateForm = () => {
@@ -70,7 +70,7 @@ const LoginForm = () => {
       } else {
         setErrors({
           email: 'Invalid credentials. Please check email and password.',
-          password: 'Use: owner@salonbill.com / Owner@2026 or manager@salonbill.com / Manager@2026 or staff@salonbill.com / Staff@2026'
+          password: 'Use: owner@hairverse.in / Owner@2026 or sudama@hairverse.in / Hairverse@2026 or staff@hairverse.in / Staff@2026'
         });
       }
       setLoading(false);

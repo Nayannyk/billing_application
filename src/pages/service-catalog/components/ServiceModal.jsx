@@ -178,7 +178,7 @@ const ServiceModal = ({ isOpen, onClose, onSave, service, categories }) => {
 
             {formData?.priceType === 'fixed' ? (
               <Input
-                label="Price (USD)"
+                label="Price (₹)"
                 type="number"
                 placeholder="e.g., 45.00"
                 value={formData?.price}
@@ -191,7 +191,7 @@ const ServiceModal = ({ isOpen, onClose, onSave, service, categories }) => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
-                  label="Minimum Price (USD)"
+                  label="Minimum Price (₹)"
                   type="number"
                   placeholder="e.g., 40.00"
                   value={formData?.priceRangeMin}
@@ -202,7 +202,7 @@ const ServiceModal = ({ isOpen, onClose, onSave, service, categories }) => {
                   step="0.01"
                 />
                 <Input
-                  label="Maximum Price (USD)"
+                  label="Maximum Price (₹)"
                   type="number"
                   placeholder="e.g., 60.00"
                   value={formData?.priceRangeMax}

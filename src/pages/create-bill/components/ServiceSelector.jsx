@@ -11,33 +11,34 @@ const ServiceSelector = ({ onAddService, categories }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const services = [
-    { id: 1, name: 'Haircut - Men', category: 'haircut', price: 25.00, duration: '30 min' },
-    { id: 2, name: 'Haircut - Women', category: 'haircut', price: 45.00, duration: '45 min' },
-    { id: 3, name: 'Hair Coloring - Full', category: 'coloring', price: 120.00, duration: '2 hours' },
-    { id: 4, name: 'Hair Coloring - Highlights', category: 'coloring', price: 85.00, duration: '90 min' },
-    { id: 5, name: 'Keratin Treatment', category: 'treatment', price: 150.00, duration: '2.5 hours' },
-    { id: 6, name: 'Deep Conditioning', category: 'treatment', price: 35.00, duration: '30 min' },
-    { id: 7, name: 'Blow Dry & Style', category: 'styling', price: 30.00, duration: '30 min' },
-    { id: 8, name: 'Updo Styling', category: 'styling', price: 65.00, duration: '60 min' },
-    { id: 9, name: 'Manicure - Classic', category: 'nails', price: 20.00, duration: '30 min' },
-    { id: 10, name: 'Manicure - Gel', category: 'nails', price: 35.00, duration: '45 min' },
-    { id: 11, name: 'Pedicure - Classic', category: 'nails', price: 30.00, duration: '45 min' },
-    { id: 12, name: 'Pedicure - Spa', category: 'nails', price: 50.00, duration: '60 min' },
-    { id: 13, name: 'Facial - Basic', category: 'facial', price: 55.00, duration: '45 min' },
-    { id: 14, name: 'Facial - Anti-Aging', category: 'facial', price: 95.00, duration: '75 min' },
-    { id: 15, name: 'Eyebrow Threading', category: 'waxing', price: 12.00, duration: '15 min' },
-    { id: 16, name: 'Full Body Waxing', category: 'waxing', price: 120.00, duration: '90 min' },
+    { id: 1, name: 'Haircut', category: 'haircut', price: 149, duration: '30 min' },
+    { id: 2, name: 'Beard Trim', category: 'haircut', price: 99, duration: '20 min' },
+    { id: 3, name: 'Wash & Blow Dry', category: 'haircut', price: 69, duration: '30 min' },
+    { id: 4, name: 'Haircut + Blow-Dry', category: 'haircut', price: 299, duration: '45 min' },
+    { id: 5, name: 'Hair Color', category: 'coloring', price: 399, duration: '60 min' },
+    { id: 6, name: 'Root Touch-up', category: 'coloring', price: 699, duration: '45 min' },
+    { id: 7, name: 'Global Hair Color (Short)', category: 'coloring', price: 899, duration: '90 min' },
+    { id: 8, name: 'Global Hair Color (Medium)', category: 'coloring', price: 999, duration: '2 hours' },
+    { id: 9, name: 'Global Hair Color (Long)', category: 'coloring', price: 1249, duration: '2.5 hours' },
+    { id: 10, name: 'Highlights with Color', category: 'coloring', price: 1399, duration: '2 hours' },
+    { id: 11, name: 'Facial', category: 'facial', price: 699, duration: '45 min' },
+    { id: 12, name: 'Manicure / Pedicure', category: 'nails', price: 499, duration: '60 min' },
+    { id: 13, name: 'Threading (Full Face)', category: 'waxing', price: 49, duration: '15 min' },
+    { id: 14, name: 'Upper Lips', category: 'waxing', price: 69, duration: '10 min' },
+    { id: 15, name: 'Waxing + Threading (Hand & Leg)', category: 'waxing', price: 299, duration: '45 min' },
+    { id: 16, name: 'Oil Massage', category: 'treatment', price: 1999, duration: '60 min' },
+    { id: 17, name: 'Basic Package', category: 'treatment', price: 1099, duration: '2 hours' },
+    { id: 18, name: 'Premium Package', category: 'treatment', price: 1999, duration: '3 hours' },
   ];
 
   const categoryOptions = [
     { value: '', label: 'All Categories' },
-    { value: 'haircut', label: 'Haircuts' },
+    { value: 'haircut', label: 'Haircuts & Styling' },
     { value: 'coloring', label: 'Hair Coloring' },
-    { value: 'treatment', label: 'Hair Treatments' },
-    { value: 'styling', label: 'Styling' },
-    { value: 'nails', label: 'Nail Services' },
     { value: 'facial', label: 'Facials' },
+    { value: 'nails', label: 'Nail Services' },
     { value: 'waxing', label: 'Waxing & Threading' },
+    { value: 'treatment', label: 'Spa & Packages' },
   ];
 
   const filteredServices = services?.filter(service => {
@@ -48,7 +49,7 @@ const ServiceSelector = ({ onAddService, categories }) => {
 
   const serviceOptions = filteredServices?.map(service => ({
     value: service?.id?.toString(),
-    label: `${service?.name} - $${service?.price?.toFixed(2)}`,
+    label: `${service?.name} - ₹${service?.price}`,
     description: `Duration: ${service?.duration}`,
   }));
 

@@ -171,6 +171,10 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .print-only {
+    display: none;
+  }
+
   @media (max-width: 768px) {
     body {
       font-size: 15px;
@@ -206,5 +210,28 @@
   .scroll-smooth {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #bill-preview, #bill-preview * {
+    visibility: visible;
+  }
+  #bill-preview {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0.75in;
+    background: white;
+  }
+  #bill-preview .no-print {
+    display: none !important;
+  }
+  #bill-preview .print-only {
+    display: block !important;
   }
 }

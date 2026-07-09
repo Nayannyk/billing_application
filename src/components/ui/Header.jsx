@@ -13,6 +13,7 @@ const Header = ({ user, onLogout }) => {
     { label: 'Customers', path: '/customer-management', icon: 'Users' },
     { label: 'Services', path: '/service-catalog', icon: 'Package' },
     { label: 'Reports', path: '/reports-analytics', icon: 'BarChart3' },
+    { label: 'Gallery', path: '/gallery', icon: 'Image' },
   ];
 
   const isActive = (path) => location?.pathname === path;
@@ -29,11 +30,11 @@ const Header = ({ user, onLogout }) => {
       <div className="flex items-center justify-between h-20 px-6">
         <div className="flex items-center gap-8">
           <Link to="/billing-dashboard" className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-12 h-12 rounded-md bg-primary/10 transition-smooth hover:bg-primary/20">
-              <Icon name="Scissors" size={28} color="var(--color-primary)" strokeWidth={2.5} />
+            <div className="flex items-center justify-center w-12 h-12 rounded-md bg-white transition-smooth hover:bg-gray-50 overflow-hidden">
+              <img src="/assets/images/Logo.png" alt="Hairverse" className="w-10 h-10 object-contain" />
             </div>
             <span className="text-xl font-heading font-semibold text-foreground">
-              SalonBill Pro
+              Hairverse
             </span>
           </Link>
 
@@ -94,7 +95,7 @@ const Header = ({ user, onLogout }) => {
                       {user?.name || 'User'}
                     </div>
                     <div className="text-xs caption text-muted-foreground mt-1">
-                      {user?.email || 'user@salonbill.com'}
+                      {user?.email || 'user@hairverse.in'}
                     </div>
                   </div>
                   <div className="p-2">
