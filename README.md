@@ -1,108 +1,83 @@
-# billing_application
-# React
+# Hairverse Unisex Salon — Billing Application
 
-A modern React-based project utilizing the latest frontend technologies and tools for building responsive web applications.
+A web-based billing and management system for **Hairverse Unisex Salon**, Nagpur. Built with React + Vite.
 
-## 🚀 Features
+## Features
 
-- **React 18** - React version with improved rendering and concurrent features
-- **Vite** - Lightning-fast build tool and development server
-- **Redux Toolkit** - State management with simplified Redux setup
-- **TailwindCSS** - Utility-first CSS framework with extensive customization
-- **React Router v6** - Declarative routing for React applications
-- **Data Visualization** - Integrated D3.js and Recharts for powerful data visualization
-- **Form Management** - React Hook Form for efficient form handling
-- **Animation** - Framer Motion for smooth UI animations
-- **Testing** - Jest and React Testing Library setup
+- **Billing Dashboard** — Metrics overview and recent bills log
+- **Create Bill** — Select services, choose/add customers, apply discount, preview bill, print or share via WhatsApp
+- **Customer Management** — Add, edit, view customer history and spending
+- **Service Catalog** — 35 salon services across 5 categories (Haircuts, Coloring, Treatments, Beauty, Spa Packages)
+- **Reports & Analytics** — Sales trends, service performance, customer analytics, peak hours, staff performance
+- **Gallery** — Upload, view, and delete salon photos
+- **Print Bill** — Generates a clean, bond-paper-style printout (logo, services, totals only)
+- **WhatsApp Sharing** — Send invoice directly to customer via WhatsApp
 
-## 📋 Prerequisites
+## Tech Stack
 
-- Node.js (v14.x or higher)
-- npm or yarn
+- **React 18** — UI framework
+- **Vite 5** — Build tool
+- **Tailwind CSS** — Styling
+- **React Router v6** — Client-side routing
+- **Recharts** — Charts for reports
+- **Framer Motion** — Animations
+- **Lucide React** — Icons
 
-## 🛠️ Installation
+## Setup
 
-1. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-   
-2. Start the development server:
-   ```bash
-   npm start
-   # or
-   yarn start
-   ```
-
-## 📁 Project Structure
-
-```
-react_app/
-├── public/             # Static assets
-├── src/
-│   ├── components/     # Reusable UI components
-│   ├── pages/          # Page components
-│   ├── styles/         # Global styles and Tailwind configuration
-│   ├── App.jsx         # Main application component
-│   ├── Routes.jsx      # Application routes
-│   └── index.jsx       # Application entry point
-├── .env                # Environment variables
-├── index.html          # HTML template
-├── package.json        # Project dependencies and scripts
-├── tailwind.config.js  # Tailwind CSS configuration
-└── vite.config.js      # Vite configuration
+```bash
+npm install
+npm start
 ```
 
-## 🧩 Adding Routes
+Opens at `http://localhost:4028`.
 
-To add new routes to the application, update the `Routes.jsx` file:
-
-```jsx
-import { useRoutes } from "react-router-dom";
-import HomePage from "pages/HomePage";
-import AboutPage from "pages/AboutPage";
-
-const ProjectRoutes = () => {
-  let element = useRoutes([
-    { path: "/", element: <HomePage /> },
-    { path: "/about", element: <AboutPage /> },
-    // Add more routes as needed
-  ]);
-
-  return element;
-};
-```
-
-## 🎨 Styling
-
-This project uses Tailwind CSS for styling. The configuration includes:
-
-- Forms plugin for form styling
-- Typography plugin for text styling
-- Aspect ratio plugin for responsive elements
-- Container queries for component-specific responsive design
-- Fluid typography for responsive text
-- Animation utilities
-
-## 📱 Responsive Design
-
-The app is built with responsive design using Tailwind CSS breakpoints.
-
-
-## 📦 Deployment
-
-Build the application for production:
+### Build for production
 
 ```bash
 npm run build
 ```
 
-## 🙏 Acknowledgments
+Output in `build/` directory.
 
-- Built with [Rocket.new](https://rocket.new)
-- Powered by React and Vite
-- Styled with Tailwind CSS
+## Login
 
-Built with ❤️ on Rocket.new
+Default credentials (demo mode):
+
+| Email | Password | Role |
+|-------|----------|------|
+| `sudama@hairverse.in` | `Hairverse@2026` | Manager |
+
+## Salon Info
+
+- **Name:** Hairverse Unisex Salon
+- **Address:** Near Tuta Bagicha, Sadar Nagpur — 440001
+- **Phone:** +91 75593 77506
+- **Manager:** Sudama Mankar
+
+## Project Structure
+
+```
+src/
+├── components/ui/       # Reusable UI components (Button, Input, Select, Header, etc.)
+├── context/             # React Context providers (CustomerContext)
+├── pages/
+│   ├── billing-dashboard/
+│   ├── create-bill/
+│   ├── customer-management/
+│   ├── gallery/
+│   ├── login/
+│   ├── reports-analytics/
+│   └── service-catalog/
+├── styles/              # Tailwind CSS with custom theme
+└── utils/               # Utility functions
+public/assets/images/    # Logo, QR codes, gallery photos
+```
+
+## Currency
+
+All pricing in **Indian Rupees (₹)** with `en-IN` locale formatting.
+
+## License
+
+Private — for Hairverse Unisex Salon use.
