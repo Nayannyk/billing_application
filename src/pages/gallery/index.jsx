@@ -25,7 +25,7 @@ const Gallery = () => {
     setImages(STATIC_IMAGES.map((f, i) => ({
       id: `gallery-${i}`,
       name: f,
-      src: `/assets/images/gallery/${f}`
+      src: `/assets/images/gallery/${encodeURIComponent(f)}`
     })));
   }, []);
 
