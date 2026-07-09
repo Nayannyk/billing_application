@@ -11,9 +11,11 @@ import CustomerCard from './components/CustomerCard';
 import CustomerModal from './components/CustomerModal';
 import CustomerForm from './components/CustomerForm';
 import BulkActionsBar from './components/BulkActionsBar';
+import { useCustomers } from '../../context/CustomerContext';
 
 const CustomerManagement = () => {
   const navigate = useNavigate();
+  const { customers, setCustomers, addCustomer, updateCustomer } = useCustomers();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [showCustomerForm, setShowCustomerForm] = useState(false);
@@ -27,8 +29,6 @@ const CustomerManagement = () => {
     email: 'sudama@hairverse.in',
     role: 'Manager'
   };
-
-  const [customers, setCustomers] = useState([]);
 
   const filterOptions = [
     { value: 'all', label: 'All Customers' },
@@ -95,9 +95,9 @@ const CustomerManagement = () => {
 
   const handleSaveCustomer = (customerData) => {
     if (editingCustomer) {
-      setCustomers(prev => prev?.map(c => c?.id === customerData?.id ? customerData : c));
+      updateCustomer(customerData);
     } else {
-      setCustomers(prev => [...prev, customerData]);
+      addCustomer(customerData);
     }
     setShowCustomerForm(false);
     setEditingCustomer(null);

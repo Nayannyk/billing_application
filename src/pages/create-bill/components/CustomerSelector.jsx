@@ -3,8 +3,10 @@ import Select from '../../../components/ui/Select';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 import Icon from '../../../components/AppIcon';
+import { useCustomers } from '../../../context/CustomerContext';
 
 const CustomerSelector = ({ selectedCustomer, onCustomerChange, onNewCustomer }) => {
+  const { customers, addCustomer } = useCustomers();
   const [showNewCustomerForm, setShowNewCustomerForm] = useState(false);
   const [newCustomer, setNewCustomer] = useState({
     name: '',
@@ -13,53 +15,12 @@ const CustomerSelector = ({ selectedCustomer, onCustomerChange, onNewCustomer })
   });
   const [errors, setErrors] = useState({});
 
-  const existingCustomers = [
-    { 
-      id: 1, 
-      name: 'Sarah Johnson', 
-      phone: '+1 (555) 123-4567', 
-      email: 'sarah.j@email.com',
-      visits: 12,
-      lastVisit: '2026-01-10'
-    },
-    { 
-      id: 2, 
-      name: 'Michael Chen', 
-      phone: '+1 (555) 234-5678', 
-      email: 'mchen@email.com',
-      visits: 8,
-      lastVisit: '2026-01-12'
-    },
-    { 
-      id: 3, 
-      name: 'Emily Rodriguez', 
-      phone: '+1 (555) 345-6789', 
-      email: 'emily.r@email.com',
-      visits: 15,
-      lastVisit: '2026-01-13'
-    },
-    { 
-      id: 4, 
-      name: 'David Thompson', 
-      phone: '+1 (555) 456-7890', 
-      email: 'dthompson@email.com',
-      visits: 5,
-      lastVisit: '2026-01-08'
-    },
-    { 
-      id: 5, 
-      name: 'Jessica Martinez', 
-      phone: '+1 (555) 567-8901', 
-      email: 'jmartinez@email.com',
-      visits: 20,
-      lastVisit: '2026-01-14'
-    },
-  ];
+  const existingCustomers = customers;
 
   const customerOptions = existingCustomers?.map(customer => ({
     value: customer?.id?.toString(),
     label: customer?.name,
-    description: `${customer?.phone} • ${customer?.visits} visits`,
+    description: `${customer?.phone} • ${customer?.visitFrequency || 'New'}`,
   }));
 
   const validateNewCustomer = () => {
@@ -85,12 +46,10 @@ const CustomerSelector = ({ selectedCustomer, onCustomerChange, onNewCustomer })
 
   const handleSaveNewCustomer = () => {
     if (validateNewCustomer()) {
-      const customer = {
-        id: Date.now(),
+      const customer = addCustomer({
         ...newCustomer,
-        visits: 1,
         lastVisit: new Date()?.toISOString()?.split('T')?.[0],
-      };
+      });
       onNewCustomer(customer);
       setNewCustomer({ name: '', phone: '', email: '' });
       setShowNewCustomerForm(false);

@@ -9,9 +9,11 @@ import BillPreview from './components/BillPreview';
 import DiscountModal from './components/DiscountModal';
 import WhatsAppModal from './components/WhatsAppModal';
 import Icon from '../../components/AppIcon';
+import { useCustomers } from '../../context/CustomerContext';
 
 const CreateBill = () => {
   const navigate = useNavigate();
+  const { customers } = useCustomers();
   const [user] = useState({
     name: 'Sudama Mankar',
     email: 'sudama@hairverse.in',
@@ -40,7 +42,8 @@ const CreateBill = () => {
 
   const handleCustomerChange = (customerId) => {
     setSelectedCustomer(customerId);
-    setCustomerData(customerId ? { id: customerId, name: '', phone: '', email: '' } : null);
+    const found = customers?.find(c => c?.id?.toString() === customerId);
+    setCustomerData(found || null);
   };
 
   const handleNewCustomer = (customer) => {
