@@ -1,13 +1,33 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import Header from '../../components/ui/Header';
 import PageTitle from '../../components/ui/PageTitle';
+
+const STATIC_IMAGES = [
+  'image.png',
+  'image (1).png', 'image (2).png', 'image (3).png',
+  'image (4).png', 'image (5).png', 'image (6).png',
+  'image (7).png', 'image (8).png', 'image (9).png',
+  'image (10).png', 'image (11).png', 'image (12).png',
+  'image (13).png', 'image (14).png', 'image (15).png',
+  'Handsome Man at a Barber Shop Styling Hair.jpg',
+  '1000248311_32fabfe2e1c4aba32aa04a0355a0c9c6-1_29_2026, 12_03_53 PM.jpg',
+  '1000248313_4c0e72c7254d10e0cc6c789567f3c2ad-1_29_2026, 12_06_10 PM.jpg'
+];
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const fileInputRef = React.createRef();
+  const fileInputRef = useRef(null);
 
   const user = { name: 'Sudama Mankar', email: 'sudama@hairverse.in', role: 'Manager' };
+
+  useEffect(() => {
+    setImages(STATIC_IMAGES.map((f, i) => ({
+      id: `gallery-${i}`,
+      name: f,
+      src: `/assets/images/gallery/${f}`
+    })));
+  }, []);
 
   const handleUpload = useCallback((e) => {
     const files = Array.from(e.target.files || []);
@@ -22,7 +42,7 @@ const Gallery = () => {
 
   const handleRemove = useCallback((id, e) => {
     e.stopPropagation();
-    URL.revokeObjectURL(id);
+    if (id.startsWith('blob:')) URL.revokeObjectURL(id);
     setImages((prev) => prev.filter((img) => img.id !== id));
     if (selectedImage === id) setSelectedImage(null);
   }, [selectedImage]);
