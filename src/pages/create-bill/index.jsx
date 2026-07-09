@@ -55,15 +55,9 @@ const CreateBill = () => {
     return services?.reduce((sum, service) => sum + service?.total, 0);
   };
 
-  const calculateTax = () => {
-    const subtotal = calculateSubtotal();
-    return (subtotal * 8.5) / 100;
-  };
-
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
-    const tax = calculateTax();
-    return subtotal + tax - discount;
+    return subtotal - discount;
   };
 
   const handleApplyDiscount = (discountAmount) => {
@@ -111,7 +105,7 @@ const CreateBill = () => {
   const billData = {
     services,
     subtotal: calculateSubtotal(),
-    tax: calculateTax(),
+    tax: 0,
     discount,
     total: calculateTotal(),
   };
@@ -206,7 +200,6 @@ const CreateBill = () => {
                 services={services}
                 customer={customerData}
                 subtotal={calculateSubtotal()}
-                tax={calculateTax()}
                 discount={discount}
                 total={calculateTotal()}
                 onRemoveService={handleRemoveService}
