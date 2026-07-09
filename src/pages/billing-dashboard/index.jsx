@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/ui/Header';
 import PageTitle from '../../components/ui/PageTitle';
@@ -8,6 +8,7 @@ import FilterBar from './components/FilterBar';
 import BillTableRow from './components/BillTableRow';
 import BillCard from './components/BillCard';
 import BillViewModal from './components/BillViewModal';
+import { useBills } from '../../context/BillContext';
 
 const BillingDashboard = () => {
   const navigate = useNavigate();
@@ -24,8 +25,19 @@ const BillingDashboard = () => {
     role: "Manager"
   };
 
-  const [metricsData] = useState([]);
-  const [recentBills] = useState([]);
+  const { bills: recentBills } = useBills();
+
+  const metricsData = useMemo(() => {
+    const todayStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const todayBills = recentBills?.filter(b => b.date?.startsWith(todayStr)) || [];
+    const totalSales = todayBills.reduce((s, b) => s + parseFloat(b.amount || 0), 0);
+    return [
+      { title: "Today's Sales", value: `₹${totalSales.toLocaleString('en-IN')}`, subtitle: `${todayBills.length} bill(s) today`, icon: "DollarSign", trend: "up", trendValue: "", iconColor: "var(--color-primary)" },
+      { title: "Bills Created", value: String(todayBills.length), subtitle: "today", icon: "FileText", trend: "up", trendValue: `+${todayBills.length}`, iconColor: "var(--color-secondary)" },
+      { title: "Pending Bills", value: "0", subtitle: "awaiting payment", icon: "Clock", trend: "down", trendValue: "0", iconColor: "var(--color-warning)" },
+      { title: "Active Customers", value: String(new Set(todayBills.map(b => b.customerName)).size), subtitle: "served today", icon: "Users", trend: "up", trendValue: "", iconColor: "var(--color-success)" }
+    ];
+  }, [recentBills]);
 
   const handleCreateBill = () => {
     navigate('/create-bill');
