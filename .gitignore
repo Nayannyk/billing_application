@@ -1,8 +1,13 @@
 .DS_Store
 node_modules
-.idea
-package-lock.json
 /build
 .vscode/
 .idea/
-vite.config.*s.*
+
+# Environment variables (contains secrets)
+.env
+.env.local
+.env.*.local
+
+# Environment variables with actual keys
+.env.production

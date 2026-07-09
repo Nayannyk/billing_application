@@ -1,6 +1,6 @@
 {
-  "short_name": "salonbill-pro",
-  "name": "salonbill-pro",
+  "short_name": "SalonBill Pro",
+  "name": "SalonBill Pro - Professional Salon Billing Management",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,6 +10,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#0F766E",
+  "background_color": "#FEFEFE"
 }
