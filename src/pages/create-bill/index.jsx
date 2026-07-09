@@ -10,10 +10,12 @@ import DiscountModal from './components/DiscountModal';
 import WhatsAppModal from './components/WhatsAppModal';
 import Icon from '../../components/AppIcon';
 import { useCustomers } from '../../context/CustomerContext';
+import { useBills } from '../../context/BillContext';
 
 const CreateBill = () => {
   const navigate = useNavigate();
   const { customers } = useCustomers();
+  const { addBill } = useBills();
   const [user] = useState({
     name: 'Sudama Mankar',
     email: 'sudama@hairverse.in',
@@ -84,6 +86,7 @@ const CreateBill = () => {
     
     setSaving(true);
     setTimeout(() => {
+      addBill(billData);
       setSaving(false);
       alert('Invoice generated successfully!');
       window.print();
