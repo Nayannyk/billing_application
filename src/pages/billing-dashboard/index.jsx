@@ -8,6 +8,7 @@ import FilterBar from './components/FilterBar';
 import BillTableRow from './components/BillTableRow';
 import BillCard from './components/BillCard';
 import BillViewModal from './components/BillViewModal';
+import Icon from '../../components/AppIcon';
 import { useBills } from '../../context/BillContext';
 
 const BillingDashboard = () => {
