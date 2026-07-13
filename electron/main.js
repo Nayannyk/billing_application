@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, shell } = require('electron');
 const path = require('path');
 const http = require('http');
 const fs = require('fs');
@@ -69,17 +69,31 @@ app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
       width: 1280,
       height: 800,
-      webPreferences: { nodeIntegration: false, contextIsolation: true }
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true
+      }
     });
 
     mainWindow.loadURL(`http://localhost:${PORT}/`);
     mainWindow.setMenuBarVisibility(false);
 
+    mainWindow.webContents.setWindowOpenHandler(({ url: targetUrl }) => {
+      shell.openExternal(targetUrl);
+      return { action: 'deny' };
+    });
+
+    mainWindow.webContents.session.on('will-download', (event, item) => {
+      const downloadsPath = app.getPath('downloads');
+      const filePath = path.join(downloadsPath, item.getFilename());
+      item.setSavePath(filePath);
+    });
+
     mainWindow.webContents.on('console-message', (event, level, message) => {
       console.log(`[${level}] ${message}`);
     });
-    mainWindow.webContents.on('did-fail-load', (_, code, desc, url) => {
-      console.error('FAIL:', url, code, desc);
+    mainWindow.webContents.on('did-fail-load', (_, code, desc, targetUrl) => {
+      console.error('FAIL:', targetUrl, code, desc);
     });
 
     mainWindow.on('closed', () => {
