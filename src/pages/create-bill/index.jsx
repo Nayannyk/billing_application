@@ -7,7 +7,6 @@ import ServiceSelector from './components/ServiceSelector';
 import CustomerSelector from './components/CustomerSelector';
 import BillPreview from './components/BillPreview';
 import DiscountModal from './components/DiscountModal';
-import WhatsAppModal from './components/WhatsAppModal';
 import Icon from '../../components/AppIcon';
 import { useCustomers } from '../../context/CustomerContext';
 import { useBills } from '../../context/BillContext';
@@ -27,7 +26,6 @@ const CreateBill = () => {
   const [services, setServices] = useState([]);
   const [discount, setDiscount] = useState(0);
   const [showDiscountModal, setShowDiscountModal] = useState(false);
-  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const handleLogout = () => {
@@ -102,7 +100,21 @@ const CreateBill = () => {
       alert('Please add at least one service to the bill');
       return;
     }
-    setShowWhatsAppModal(true);
+
+    addBill(billData);
+
+    const servicesList = services?.map((s, i) =>
+      `${i + 1}. ${s?.name}\n   Qty: ${s?.quantity} x ₹${s?.price?.toFixed(2)} = ₹${s?.total?.toFixed(2)}`
+    )?.join('\n\n');
+
+    const totals = `\n\n*Bill Summary:*\nSubtotal: ₹${billData?.subtotal?.toFixed(2)}\n${billData?.discount > 0 ? `Discount: -₹${billData?.discount?.toFixed(2)}\n` : ''}*Total Amount: ₹${billData?.total?.toFixed(2)}*`;
+
+    const message = `*Hairverse Unisex Salon Invoice*\n\nDear ${customerData?.name || 'Customer'},\n\nThank you for visiting us!\n\n${servicesList}${totals}\n\nDate: ${new Date()?.toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}\n\nWe look forward to serving you again!\n\n_Hairverse Unisex Salon_\nNear Tuta Bagicha, Sadar\nNagpur - 440001\n+91 7559377506`;
+
+    const phone = customerData?.phone?.replace(/\D/g, '');
+    if (phone) {
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+    }
   };
 
   const billData = {
@@ -216,12 +228,6 @@ const CreateBill = () => {
         onClose={() => setShowDiscountModal(false)}
         onApply={handleApplyDiscount}
         subtotal={calculateSubtotal()}
-      />
-      <WhatsAppModal
-        isOpen={showWhatsAppModal}
-        onClose={() => setShowWhatsAppModal(false)}
-        customer={customerData}
-        billData={billData}
       />
     </div>
   );
