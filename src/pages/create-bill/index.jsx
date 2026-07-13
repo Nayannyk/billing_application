@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 import Header from '../../components/ui/Header';
 import PageTitle from '../../components/ui/PageTitle';
 import ActionButtonZone from '../../components/ui/ActionButtonZone';
@@ -10,11 +12,101 @@ import DiscountModal from './components/DiscountModal';
 import Icon from '../../components/AppIcon';
 import { useCustomers } from '../../context/CustomerContext';
 import { useBills } from '../../context/BillContext';
+import LogoImg from '/assets/images/Logo.png';
+
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+  }).format(amount);
+};
+
+const BillTemplate = React.forwardRef(({ customer, services, subtotal, discount, total }, ref) => (
+  <div ref={ref} style={{ width: '800px', padding: '40px', background: 'white', fontFamily: 'Arial, sans-serif', color: '#1F2937' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid #E5E7EB' }}>
+      <img src={LogoImg} alt="Hairverse" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+      <div>
+        <h3 style={{ margin: 0, fontSize: '20px', fontWeight: 700, fontFamily: 'Arial, sans-serif' }}>Hairverse</h3>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: '#6B7280' }}>Unisex Salon</p>
+      </div>
+    </div>
+    <div style={{ marginBottom: '16px', fontSize: '12px', color: '#6B7280', lineHeight: '1.6' }}>
+      <p style={{ margin: 0 }}>Near Tuta Bagicha, Sadar</p>
+      <p style={{ margin: 0 }}>Sadar Nagpur -440001</p>
+      <p style={{ margin: 0 }}>Phone: +91 7559377506</p>
+    </div>
+    {customer && (
+      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid #E5E7EB' }}>
+        <h4 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 600, fontFamily: 'Arial, sans-serif' }}>Customer Details</h4>
+        <div style={{ fontSize: '13px', lineHeight: '1.8' }}>
+          <p style={{ margin: 0 }}>{customer.name}</p>
+          <p style={{ margin: 0 }}>{customer.phone}</p>
+          {customer.email && <p style={{ margin: 0 }}>{customer.email}</p>}
+        </div>
+      </div>
+    )}
+    <div style={{ marginBottom: '24px' }}>
+      <h4 style={{ margin: '0 0 16px', fontSize: '14px', fontWeight: 600, fontFamily: 'Arial, sans-serif' }}>Services</h4>
+      {(!services || services.length === 0) ? (
+        <p style={{ textAlign: 'center', color: '#6B7280', fontSize: '13px' }}>No services added yet</p>
+      ) : (
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ borderBottom: '2px solid #E5E7EB', fontSize: '12px', color: '#6B7280' }}>
+              <th style={{ textAlign: 'left', paddingBottom: '8px' }}>Service</th>
+              <th style={{ textAlign: 'center', paddingBottom: '8px' }}>Qty</th>
+              <th style={{ textAlign: 'right', paddingBottom: '8px' }}>Price</th>
+              <th style={{ textAlign: 'right', paddingBottom: '8px' }}>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {services.map((s, i) => (
+              <tr key={i} style={{ borderBottom: '1px solid #F3F4F6', fontSize: '13px' }}>
+                <td style={{ padding: '10px 0' }}>
+                  <div style={{ fontWeight: 500 }}>{s.name}</div>
+                  {s.duration && <div style={{ fontSize: '11px', color: '#6B7280' }}>{s.duration}</div>}
+                </td>
+                <td style={{ textAlign: 'center', padding: '10px 0', color: '#6B7280' }}>{s.quantity}</td>
+                <td style={{ textAlign: 'right', padding: '10px 0', fontFamily: 'Courier New, monospace' }}>{formatCurrency(s.price)}</td>
+                <td style={{ textAlign: 'right', padding: '10px 0', fontWeight: 600, fontFamily: 'Courier New, monospace' }}>{formatCurrency(s.total)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+    {services && services.length > 0 && (
+      <div style={{ paddingTop: '24px', borderTop: '1px solid #E5E7EB' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px' }}>
+          <span style={{ color: '#6B7280' }}>Subtotal</span>
+          <span style={{ fontWeight: 500, fontFamily: 'Courier New, monospace' }}>{formatCurrency(subtotal)}</span>
+        </div>
+        {discount > 0 && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px' }}>
+            <span style={{ color: '#059669' }}>Discount</span>
+            <span style={{ color: '#059669', fontFamily: 'Courier New, monospace' }}>-{formatCurrency(discount)}</span>
+          </div>
+        )}
+        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #E5E7EB' }}>
+          <span style={{ fontSize: '14px', fontWeight: 600 }}>Total Amount</span>
+          <span style={{ fontSize: '18px', fontWeight: 700, color: '#0F766E', fontFamily: 'Courier New, monospace' }}>{formatCurrency(total)}</span>
+        </div>
+      </div>
+    )}
+    <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #E5E7EB', textAlign: 'center' }}>
+      <p style={{ margin: 0, fontSize: '11px', color: '#6B7280' }}>Thank you for choosing Hairverse Unisex Salon!</p>
+      <p style={{ margin: '4px 0 0', fontSize: '11px', color: '#6B7280' }}>
+        Invoice generated on {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+      </p>
+    </div>
+  </div>
+));
 
 const CreateBill = () => {
   const navigate = useNavigate();
   const { customers } = useCustomers();
   const { addBill } = useBills();
+  const billRef = useRef(null);
   const [user] = useState({
     name: 'Sudama Mankar',
     email: 'sudama@hairverse.in',
@@ -91,7 +183,7 @@ const CreateBill = () => {
     }, 1000);
   };
 
-  const handleSendWhatsApp = () => {
+  const handleSendWhatsApp = async () => {
     if (!customerData) {
       alert('Please select a customer before sending bill');
       return;
@@ -102,6 +194,26 @@ const CreateBill = () => {
     }
 
     addBill(billData);
+    setSaving(true);
+
+    try {
+      const element = billRef.current;
+      if (element) {
+        const canvas = await html2canvas(element, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: '#ffffff',
+          logging: false,
+        });
+        const imgData = canvas.toDataURL('image/png');
+        const imgW = 190;
+        const imgH = (canvas.height / canvas.width) * imgW;
+        const doc = new jsPDF('p', 'mm', 'a4');
+        doc.addImage(imgData, 'PNG', 10, 10, imgW, imgH);
+        doc.save(`Hairverse_Invoice_${Date.now()}.pdf`);
+      }
+    } catch (_) {}
 
     const servicesList = services?.map((s, i) =>
       `${i + 1}. ${s?.name}\n   Qty: ${s?.quantity} x ₹${s?.price?.toFixed(2)} = ₹${s?.total?.toFixed(2)}`
@@ -109,12 +221,14 @@ const CreateBill = () => {
 
     const totals = `\n\n*Bill Summary:*\nSubtotal: ₹${billData?.subtotal?.toFixed(2)}\n${billData?.discount > 0 ? `Discount: -₹${billData?.discount?.toFixed(2)}\n` : ''}*Total Amount: ₹${billData?.total?.toFixed(2)}*`;
 
-    const message = `*Hairverse Unisex Salon Invoice*\n\nDear ${customerData?.name || 'Customer'},\n\nThank you for visiting us!\n\n${servicesList}${totals}\n\nDate: ${new Date()?.toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}\n\nWe look forward to serving you again!\n\n_Hairverse Unisex Salon_\nNear Tuta Bagicha, Sadar\nNagpur - 440001\n+91 7559377506`;
+    const message = `*Hairverse Unisex Salon Invoice*\n\nDear ${customerData?.name || 'Customer'},\n\nThank you for visiting us!\n\n${servicesList}${totals}\n\nDate: ${new Date()?.toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}\n\nPlease find the invoice PDF attached.\n\nWe look forward to serving you again!\n\n_Hairverse Unisex Salon_\nNear Tuta Bagicha, Sadar\nNagpur - 440001\n+91 7559377506`;
 
     const phone = customerData?.phone?.replace(/\D/g, '');
     if (phone) {
       window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
     }
+
+    setSaving(false);
   };
 
   const billData = {
@@ -229,6 +343,16 @@ const CreateBill = () => {
         onApply={handleApplyDiscount}
         subtotal={calculateSubtotal()}
       />
+      <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
+        <BillTemplate
+          ref={billRef}
+          customer={customerData}
+          services={services}
+          subtotal={calculateSubtotal()}
+          discount={discount}
+          total={calculateTotal()}
+        />
+      </div>
     </div>
   );
 };
