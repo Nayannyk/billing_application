@@ -237,6 +237,7 @@ const CreateBill = () => {
     tax: 0,
     discount,
     total: calculateTotal(),
+    customer: customerData,
   };
 
   return (

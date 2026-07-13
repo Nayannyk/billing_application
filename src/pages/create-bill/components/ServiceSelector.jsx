@@ -3,45 +3,23 @@ import Select from '../../../components/ui/Select';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 import Icon from '../../../components/AppIcon';
+import { useServices } from '../../../context/ServiceContext';
 
-const ServiceSelector = ({ onAddService, categories }) => {
+const ServiceSelector = ({ onAddService }) => {
+  const { services, categories } = useServices();
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedService, setSelectedService] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const services = [
-    { id: 1, name: 'Haircut', category: 'haircut', price: 149, duration: '30 min' },
-    { id: 2, name: 'Beard Trim', category: 'haircut', price: 99, duration: '20 min' },
-    { id: 3, name: 'Wash & Blow Dry', category: 'haircut', price: 69, duration: '30 min' },
-    { id: 4, name: 'Haircut + Blow-Dry', category: 'haircut', price: 299, duration: '45 min' },
-    { id: 5, name: 'Hair Color', category: 'coloring', price: 399, duration: '60 min' },
-    { id: 6, name: 'Root Touch-up', category: 'coloring', price: 699, duration: '45 min' },
-    { id: 7, name: 'Global Hair Color (Short)', category: 'coloring', price: 899, duration: '90 min' },
-    { id: 8, name: 'Global Hair Color (Medium)', category: 'coloring', price: 999, duration: '2 hours' },
-    { id: 9, name: 'Global Hair Color (Long)', category: 'coloring', price: 1249, duration: '2.5 hours' },
-    { id: 10, name: 'Highlights with Color', category: 'coloring', price: 1399, duration: '2 hours' },
-    { id: 11, name: 'Facial', category: 'facial', price: 699, duration: '45 min' },
-    { id: 12, name: 'Manicure / Pedicure', category: 'nails', price: 499, duration: '60 min' },
-    { id: 13, name: 'Threading (Full Face)', category: 'waxing', price: 49, duration: '15 min' },
-    { id: 14, name: 'Upper Lips', category: 'waxing', price: 69, duration: '10 min' },
-    { id: 15, name: 'Waxing + Threading (Hand & Leg)', category: 'waxing', price: 299, duration: '45 min' },
-    { id: 16, name: 'Oil Massage', category: 'treatment', price: 1999, duration: '60 min' },
-    { id: 17, name: 'Basic Package', category: 'treatment', price: 1099, duration: '2 hours' },
-    { id: 18, name: 'Premium Package', category: 'treatment', price: 1999, duration: '3 hours' },
-  ];
+  const activeServices = services?.filter(s => s?.active);
 
   const categoryOptions = [
     { value: '', label: 'All Categories' },
-    { value: 'haircut', label: 'Haircuts & Styling' },
-    { value: 'coloring', label: 'Hair Coloring' },
-    { value: 'facial', label: 'Facials' },
-    { value: 'nails', label: 'Nail Services' },
-    { value: 'waxing', label: 'Waxing & Threading' },
-    { value: 'treatment', label: 'Spa & Packages' },
+    ...categories?.map(cat => ({ value: cat?.name, label: cat?.name }))
   ];
 
-  const filteredServices = services?.filter(service => {
+  const filteredServices = activeServices?.filter(service => {
     const matchesCategory = !selectedCategory || service?.category === selectedCategory;
     const matchesSearch = !searchTerm || service?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -50,13 +28,13 @@ const ServiceSelector = ({ onAddService, categories }) => {
   const serviceOptions = filteredServices?.map(service => ({
     value: service?.id?.toString(),
     label: `${service?.name} - ₹${service?.price}`,
-    description: `Duration: ${service?.duration}`,
+    description: `Duration: ${service?.duration} min`,
   }));
 
   const handleAddService = () => {
     if (!selectedService) return;
 
-    const service = services?.find(s => s?.id?.toString() === selectedService);
+    const service = activeServices?.find(s => s?.id?.toString() === selectedService);
     if (service) {
       onAddService({
         ...service,

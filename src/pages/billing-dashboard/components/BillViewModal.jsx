@@ -3,18 +3,20 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import BillStatusBadge from './BillStatusBadge';
 
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+  }).format(amount);
+};
+
 const BillViewModal = ({ bill, onClose, onShare, onPrint }) => {
   if (!bill) return null;
 
-  const serviceItems = [
-    { name: 'Haircut & Styling', price: 45.00, quantity: 1 },
-    { name: 'Hair Coloring', price: 85.00, quantity: 1 },
-    { name: 'Deep Conditioning Treatment', price: 35.00, quantity: 1 }
-  ];
-
-  const subtotal = serviceItems?.reduce((sum, item) => sum + (item?.price * item?.quantity), 0);
-  const tax = subtotal * 0.08;
-  const total = subtotal + tax;
+  const serviceItems = bill?.items || [];
+  const subtotal = bill?.subtotal || serviceItems.reduce((sum, item) => sum + (item?.price * item?.quantity), 0);
+  const discount = bill?.discount || 0;
+  const total = bill?.total || bill?.amount || 0;
 
   return (
     <>
@@ -48,7 +50,7 @@ const BillViewModal = ({ bill, onClose, onShare, onPrint }) => {
               <div className="text-right">
                 <p className="text-sm caption text-muted-foreground mb-1">Total Amount</p>
                 <p className="text-3xl font-heading font-bold text-primary data-text">
-                  ${total?.toFixed(2)}
+                  {formatCurrency(total)}
                 </p>
               </div>
             </div>
@@ -61,16 +63,18 @@ const BillViewModal = ({ bill, onClose, onShare, onPrint }) => {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Icon name="User" size={16} className="text-muted-foreground" />
-                    <span className="text-sm text-foreground">{bill?.customerName}</span>
+                    <span className="text-sm text-foreground">{bill?.customerName || 'Walk-in'}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Icon name="Phone" size={16} className="text-muted-foreground" />
-                    <span className="text-sm text-foreground">{bill?.customerPhone}</span>
+                    <span className="text-sm text-foreground">{bill?.customerPhone || '-'}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Icon name="Mail" size={16} className="text-muted-foreground" />
-                    <span className="text-sm text-foreground">jessica.martinez@email.com</span>
-                  </div>
+                  {bill?.customer?.email && (
+                    <div className="flex items-center gap-2">
+                      <Icon name="Mail" size={16} className="text-muted-foreground" />
+                      <span className="text-sm text-foreground">{bill.customer.email}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -81,15 +85,11 @@ const BillViewModal = ({ bill, onClose, onShare, onPrint }) => {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Icon name="Calendar" size={16} className="text-muted-foreground" />
-                    <span className="text-sm text-foreground">January 14, 2026</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Icon name="Clock" size={16} className="text-muted-foreground" />
-                    <span className="text-sm text-foreground">2:30 PM</span>
+                    <span className="text-sm text-foreground">{bill?.date || '-'}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Icon name="UserCircle" size={16} className="text-muted-foreground" />
-                    <span className="text-sm text-foreground">Sarah Johnson</span>
+                    <span className="text-sm text-foreground">Sudama Mankar</span>
                   </div>
                 </div>
               </div>
@@ -118,20 +118,26 @@ const BillViewModal = ({ bill, onClose, onShare, onPrint }) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {serviceItems?.map((item, index) => (
+                    {serviceItems?.length > 0 ? serviceItems.map((item, index) => (
                       <tr key={index}>
                         <td className="px-4 py-3 text-sm text-foreground">{item?.name}</td>
                         <td className="px-4 py-3 text-sm text-center text-foreground data-text">
                           {item?.quantity}
                         </td>
                         <td className="px-4 py-3 text-sm text-right text-foreground data-text">
-                          ${item?.price?.toFixed(2)}
+                          {formatCurrency(item?.price)}
                         </td>
                         <td className="px-4 py-3 text-sm text-right font-medium text-foreground data-text">
-                          ${(item?.price * item?.quantity)?.toFixed(2)}
+                          {formatCurrency(item?.price * item?.quantity)}
                         </td>
                       </tr>
-                    ))}
+                    )) : (
+                      <tr>
+                        <td colSpan={4} className="px-4 py-3 text-sm text-center text-muted-foreground">
+                          {bill?.services || 'No services'}
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -140,19 +146,21 @@ const BillViewModal = ({ bill, onClose, onShare, onPrint }) => {
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
                   <span className="font-medium text-foreground data-text">
-                    ${subtotal?.toFixed(2)}
+                    {formatCurrency(subtotal)}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Tax (8%)</span>
-                  <span className="font-medium text-foreground data-text">
-                    ${tax?.toFixed(2)}
-                  </span>
-                </div>
+                {discount > 0 && (
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Discount</span>
+                    <span className="font-medium text-success data-text">
+                      -{formatCurrency(discount)}
+                    </span>
+                  </div>
+                )}
                 <div className="flex items-center justify-between text-lg pt-2 border-t border-border">
                   <span className="font-heading font-semibold text-foreground">Total</span>
                   <span className="font-heading font-bold text-primary data-text">
-                    ${total?.toFixed(2)}
+                    {formatCurrency(total)}
                   </span>
                 </div>
               </div>
