@@ -31,11 +31,6 @@ const PageTitle = () => {
       description: 'Business intelligence and performance analysis',
       icon: 'BarChart3',
     },
-    '/gallery': {
-      title: 'Gallery',
-      description: 'Salon photos and portfolio',
-      icon: 'Image',
-    },
   };
 
   const currentPage = pageTitles?.[location?.pathname] || {

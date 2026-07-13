@@ -14,7 +14,6 @@ const Header = ({ user, onLogout }) => {
     { label: 'Customers', path: '/customer-management', icon: 'Users' },
     { label: 'Services', path: '/service-catalog', icon: 'Package' },
     { label: 'Reports', path: '/reports-analytics', icon: 'BarChart3' },
-    { label: 'Gallery', path: '/gallery', icon: 'Image' },
   ];
 
   const isActive = (path) => location?.pathname === path;
