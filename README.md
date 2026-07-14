@@ -58,6 +58,8 @@ A web-based billing and management system for **Hairverse Unisex Salon**, Nagpur
 ### Install & Run
 
 ```bash
+git clone https://github.com/Nayannyk/billing_application.git
+cd billing_application
 npm install
 npm start
 ```
@@ -263,7 +265,7 @@ The app uses a custom design token system defined in `src/styles/tailwind.css`:
 
 ## Currency
 
-All pricing in **Indian Rupees (₹)** with `en-IN` locale formatting.
+All pricing in **Indian Rupees** with `en-IN` locale formatting.
 
 ## License
 
