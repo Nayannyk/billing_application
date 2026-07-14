@@ -1,15 +1,30 @@
-.DS_Store
-node_modules
-/build
-.vscode/
-.idea/
+# Dependencies
+node_modules/
 
+# Build output
+build/
 dist/
 
-# Environment variables (contains secrets)
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
 .env
 .env.local
 .env.*.local
-
-# Environment variables with actual keys
 .env.production
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Lock files
+package-lock.json
+
+# Electron
+out/
