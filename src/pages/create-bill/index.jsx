@@ -9,10 +9,18 @@ import ServiceSelector from './components/ServiceSelector';
 import CustomerSelector from './components/CustomerSelector';
 import BillPreview from './components/BillPreview';
 import DiscountModal from './components/DiscountModal';
+import Select from '../../components/ui/Select';
 import Icon from '../../components/AppIcon';
 import { useCustomers } from '../../context/CustomerContext';
 import { useBills } from '../../context/BillContext';
 import LogoImg from '/assets/images/Logo.png';
+
+const STYLIST_OPTIONS = [
+  { value: 'Sudama Mankar', label: 'Sudama Mankar' },
+  { value: 'Sonam Mankar', label: 'Sonam Mankar' },
+  { value: 'Aayush Sen', label: 'Aayush Sen' },
+  { value: 'Hampi Marathe', label: 'Hampi Marathe' },
+];
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('en-IN', {
@@ -21,7 +29,7 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
-const BillTemplate = React.forwardRef(({ customer, services, subtotal, discount, total }, ref) => (
+const BillTemplate = React.forwardRef(({ customer, services, subtotal, discount, total, stylist }, ref) => (
   <div ref={ref} style={{ width: '800px', padding: '40px', background: 'white', fontFamily: 'Arial, sans-serif', color: '#1F2937' }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid #E5E7EB' }}>
       <img src={LogoImg} alt="Hairverse" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
@@ -42,6 +50,7 @@ const BillTemplate = React.forwardRef(({ customer, services, subtotal, discount,
           <p style={{ margin: 0 }}>{customer.name}</p>
           <p style={{ margin: 0 }}>{customer.phone}</p>
           {customer.email && <p style={{ margin: 0 }}>{customer.email}</p>}
+          {stylist && <p style={{ margin: 0, fontWeight: 600 }}>Stylist: {stylist}</p>}
         </div>
       </div>
     )}
@@ -116,7 +125,9 @@ const CreateBill = () => {
   const [selectedCustomer, setSelectedCustomer] = useState('');
   const [customerData, setCustomerData] = useState(null);
   const [services, setServices] = useState([]);
+  const [selectedStylist, setSelectedStylist] = useState('');
   const [discount, setDiscount] = useState(0);
+  const [discountPercentage, setDiscountPercentage] = useState(0);
   const [showDiscountModal, setShowDiscountModal] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -152,8 +163,9 @@ const CreateBill = () => {
     return subtotal - discount;
   };
 
-  const handleApplyDiscount = (discountAmount) => {
+  const handleApplyDiscount = (discountAmount, percentage) => {
     setDiscount(discountAmount);
+    setDiscountPercentage(percentage || 0);
   };
 
   const handleSaveDraft = () => {
@@ -219,7 +231,7 @@ const CreateBill = () => {
       `${i + 1}. ${s?.name}\n   Qty: ${s?.quantity} x ₹${s?.price?.toFixed(2)} = ₹${s?.total?.toFixed(2)}`
     )?.join('\n\n');
 
-    const totals = `\n\n*Bill Summary:*\nSubtotal: ₹${billData?.subtotal?.toFixed(2)}\n${billData?.discount > 0 ? `Discount: -₹${billData?.discount?.toFixed(2)}\n` : ''}*Total Amount: ₹${billData?.total?.toFixed(2)}*`;
+    const totals = `\n\n*Bill Summary:*\nSubtotal: ₹${billData?.subtotal?.toFixed(2)}\n${billData?.discount > 0 ? `Discount: -₹${billData?.discount?.toFixed(2)}\n` : ''}*Total Amount: ₹${billData?.total?.toFixed(2)}*${billData?.stylist ? `\n\n*Stylist:* ${billData.stylist}` : ''}`;
 
     const message = `*Hairverse Unisex Salon Invoice*\n\nDear ${customerData?.name || 'Customer'},\n\nThank you for visiting us!\n\n${servicesList}${totals}\n\nDate: ${new Date()?.toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}\n\nPlease find the invoice PDF attached.\n\nWe look forward to serving you again!\n\n_Hairverse Unisex Salon_\nNear Tuta Bagicha, Sadar\nNagpur - 440001\n+91 7559377506`;
 
@@ -238,6 +250,7 @@ const CreateBill = () => {
     discount,
     total: calculateTotal(),
     customer: customerData,
+    stylist: selectedStylist,
   };
 
   return (
@@ -291,6 +304,24 @@ const CreateBill = () => {
                 onCustomerChange={handleCustomerChange}
                 onNewCustomer={handleNewCustomer}
               />
+
+              <div className="bg-card rounded-lg shadow-warm-md p-4 md:p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-md bg-primary/10">
+                    <Icon name="Scissors" size={20} color="var(--color-primary)" strokeWidth={2} />
+                  </div>
+                  <h3 className="text-base font-body font-semibold text-foreground">
+                    Stylist
+                  </h3>
+                </div>
+                <Select
+                  options={STYLIST_OPTIONS}
+                  value={selectedStylist}
+                  onChange={setSelectedStylist}
+                  placeholder="Select stylist"
+                  searchable
+                />
+              </div>
               
               <ServiceSelector
                 onAddService={handleAddService}
@@ -331,7 +362,9 @@ const CreateBill = () => {
                 customer={customerData}
                 subtotal={calculateSubtotal()}
                 discount={discount}
+                discountPercentage={discountPercentage}
                 total={calculateTotal()}
+                stylist={selectedStylist}
                 onRemoveService={handleRemoveService}
               />
             </div>
@@ -352,6 +385,7 @@ const CreateBill = () => {
           subtotal={calculateSubtotal()}
           discount={discount}
           total={calculateTotal()}
+          stylist={selectedStylist}
         />
       </div>
     </div>

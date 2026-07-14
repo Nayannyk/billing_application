@@ -48,7 +48,7 @@ const DiscountModal = ({ isOpen, onClose, onApply, subtotal }) => {
     }
 
     const discountAmount = calculateDiscount();
-    onApply(discountAmount);
+    onApply(discountAmount, discountType === 'percentage' ? parseFloat(discountValue) : 0);
     handleClose();
   };
 

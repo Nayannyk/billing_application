@@ -8,6 +8,8 @@ const BillPreview = ({
   customer,
   subtotal,
   discount,
+  discountPercentage,
+  stylist,
   onRemoveService,
   onUpdateQuantity
 }) => {
@@ -66,6 +68,12 @@ const BillPreview = ({
           <div className="flex items-center gap-2">
                 <Icon name="Mail" size={16} className="text-muted-foreground" />
                 <span className="text-foreground">{customer?.email}</span>
+              </div>
+          }
+          {stylist &&
+          <div className="flex items-center gap-2">
+                <Icon name="Scissors" size={16} className="text-muted-foreground" />
+                <span className="text-foreground font-medium">Stylist: {stylist}</span>
               </div>
           }
           </div>
@@ -138,7 +146,9 @@ const BillPreview = ({
           </div>
           {discount > 0 &&
         <div className="flex items-center justify-between text-sm">
-              <span className="text-success">Discount</span>
+              <span className="text-success">
+                Discount{discountPercentage ? ` (${discountPercentage}%)` : ''}
+              </span>
               <span className="text-success data-text font-medium">
                 -{formatCurrency(discount)}
               </span>

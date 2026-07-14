@@ -1,7 +1,9 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import * as XLSX from 'xlsx';
 
 const SERVICES_KEY = 'hairverse_services';
 const CATEGORIES_KEY = 'hairverse_categories';
+const EXCEL_VERSION_KEY = 'hairverse_services_excel_version';
 
 const ServiceContext = createContext(null);
 
@@ -68,15 +70,92 @@ const saveToStorage = (key, data) => {
   try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
 };
 
+const parseExcelFile = (workbook) => {
+  const services = [];
+  const categories = [];
+
+  // Parse Services sheet
+  const servicesSheet = workbook.Sheets['Services'];
+  if (servicesSheet) {
+    const data = XLSX.utils.sheet_to_json(servicesSheet);
+    data.forEach((row, index) => {
+      if (row['Name']) {
+        const service = {
+          id: row['ID'] || index + 1,
+          name: row['Name'],
+          description: row['Description'] || '',
+          category: row['Category'] || 'Uncategorized',
+          duration: row['Duration (min)'] || 30,
+          price: row['Price (INR)'] || 0,
+          active: row['Active'] === 'Yes' || row['Active'] === true,
+        };
+        if (row['Price Range Min'] && row['Price Range Max']) {
+          service.priceRange = { min: row['Price Range Min'], max: row['Price Range Max'] };
+        }
+        services.push(service);
+      }
+    });
+  }
+
+  // Parse Categories sheet
+  const categoriesSheet = workbook.Sheets['Categories'];
+  if (categoriesSheet) {
+    const data = XLSX.utils.sheet_to_json(categoriesSheet);
+    data.forEach((row, index) => {
+      if (row['Name']) {
+        categories.push({
+          id: row['ID'] || index + 1,
+          name: row['Name'],
+          description: row['Description'] || '',
+          color: row['Color'] || '#6B7280',
+        });
+      }
+    });
+  }
+
+  return { services, categories };
+};
+
 export const ServiceProvider = ({ children }) => {
   const [services, setServices] = useState(() => loadFromStorage(SERVICES_KEY, DEFAULT_SERVICES));
   const [categories, setCategories] = useState(() => loadFromStorage(CATEGORIES_KEY, DEFAULT_CATEGORIES));
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => { saveToStorage(SERVICES_KEY, services); }, [services]);
   useEffect(() => { saveToStorage(CATEGORIES_KEY, categories); }, [categories]);
 
+  const loadFromExcel = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/services.xlsx');
+      if (!response.ok) throw new Error('Failed to fetch Excel file');
+      const arrayBuffer = await response.arrayBuffer();
+      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+      const parsed = parseExcelFile(workbook);
+
+      if (parsed.services.length > 0) {
+        setServices(parsed.services);
+      }
+      if (parsed.categories.length > 0) {
+        setCategories(parsed.categories);
+      }
+
+      const version = new Date().getTime();
+      localStorage.setItem(EXCEL_VERSION_KEY, String(version));
+    } catch (err) {
+      console.error('Failed to load services from Excel:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // On mount, always try to load from Excel to pick up any changes
+  useEffect(() => {
+    loadFromExcel();
+  }, [loadFromExcel]);
+
   return (
-    <ServiceContext.Provider value={{ services, setServices, categories, setCategories }}>
+    <ServiceContext.Provider value={{ services, setServices, categories, setCategories, loadFromExcel, loading }}>
       {children}
     </ServiceContext.Provider>
   );

@@ -53,7 +53,8 @@ export const BillProvider = ({ children }) => {
       subtotal: billData.subtotal,
       discount: billData.discount,
       total: billData.total,
-      customer: billData.customer
+      customer: billData.customer,
+      stylist: billData.stylist || ''
     };
     setBills(prev => [bill, ...prev]);
     return bill;

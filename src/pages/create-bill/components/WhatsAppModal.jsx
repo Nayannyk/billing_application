@@ -13,7 +13,7 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
-const BillTemplate = React.forwardRef(({ customer, services, subtotal, discount, total }, ref) => (
+const BillTemplate = React.forwardRef(({ customer, services, subtotal, discount, total, stylist }, ref) => (
   <div ref={ref} style={{ width: '800px', padding: '40px', background: 'white', fontFamily: 'Arial, sans-serif', color: '#1F2937' }}>
     {/* Header */}
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid #E5E7EB' }}>
@@ -37,6 +37,7 @@ const BillTemplate = React.forwardRef(({ customer, services, subtotal, discount,
           <p style={{ margin: 0 }}>{customer.name}</p>
           <p style={{ margin: 0 }}>{customer.phone}</p>
           {customer.email && <p style={{ margin: 0 }}>{customer.email}</p>}
+          {stylist && <p style={{ margin: 0, fontWeight: 600 }}>Stylist: {stylist}</p>}
         </div>
       </div>
     )}
@@ -111,7 +112,7 @@ const generateMessage = (customer, billData, formatCurrency) => {
     `${index + 1}. ${service?.name}\n   Qty: ${service?.quantity} × ${formatCurrency(service?.price)} = ${formatCurrency(service?.total)}`
   )?.join('\n\n');
 
-  const totals = `\n\n*Bill Summary:*\nSubtotal: ${formatCurrency(billData?.subtotal)}\n${billData?.discount > 0 ? `Discount: -${formatCurrency(billData?.discount)}\n` : ''}*Total Amount: ${formatCurrency(billData?.total)}*`;
+  const totals = `\n\n*Bill Summary:*\nSubtotal: ${formatCurrency(billData?.subtotal)}\n${billData?.discount > 0 ? `Discount: -${formatCurrency(billData?.discount)}\n` : ''}*Total Amount: ${formatCurrency(billData?.total)}*${billData?.stylist ? `\n\n*Stylist:* ${billData.stylist}` : ''}`;
 
   const footer = `\n\nDate: ${new Date()?.toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}\n\nWe look forward to serving you again!\n\n_Hairverse Unisex Salon_\nNear Tuta Bagicha, Sadar\nNagpur - 440001\n+91 7559377506`;
 
@@ -266,6 +267,7 @@ const WhatsAppModal = ({ isOpen, onClose, customer, billData }) => {
           subtotal={billData?.subtotal}
           discount={billData?.discount}
           total={billData?.total}
+          stylist={billData?.stylist}
         />
       </div>
     </>
