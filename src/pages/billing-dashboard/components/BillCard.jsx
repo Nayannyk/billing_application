@@ -16,7 +16,7 @@ const BillCard = ({ bill, onView, onEdit, onShare, onPrint }) => {
         </div>
         <div className="text-right">
           <p className="text-xl font-heading font-semibold text-foreground data-text">
-            ${bill?.amount}
+            ₹{bill?.amount}
           </p>
         </div>
       </div>

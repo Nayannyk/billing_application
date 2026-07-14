@@ -38,9 +38,7 @@ const CustomerForm = ({ customer, onClose, onSave }) => {
       newErrors.phone = 'Invalid phone number format';
     }
 
-    if (!formData?.email?.trim()) {
-      newErrors.email = 'Email address is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/?.test(formData?.email)) {
+    if (formData?.email?.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/?.test(formData?.email)) {
       newErrors.email = 'Invalid email format';
     }
 
@@ -123,7 +121,7 @@ const CustomerForm = ({ customer, onClose, onSave }) => {
                 label="Phone Number"
                 type="tel"
                 name="phone"
-                placeholder="+1 (555) 123-4567"
+                placeholder="+91 98765 43210"
                 value={formData?.phone}
                 onChange={handleChange}
                 error={errors?.phone}
@@ -139,7 +137,7 @@ const CustomerForm = ({ customer, onClose, onSave }) => {
                 value={formData?.email}
                 onChange={handleChange}
                 error={errors?.email}
-                required
+                description="Optional - for email receipts"
               />
             </div>
 

@@ -179,12 +179,12 @@ const ServiceCatalog = () => {
             <div className="bg-card rounded-md border border-border p-4 md:p-6">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center justify-center w-12 h-12 rounded-md bg-accent/10">
-                  <Icon name="DollarSign" size={24} color="var(--color-accent)" />
+                  <Icon name="IndianRupee" size={24} color="var(--color-accent)" />
                 </div>
                 <span className="caption text-muted-foreground">Average</span>
               </div>
               <div className="text-2xl md:text-3xl font-heading font-bold text-foreground data-text">
-                ${stats?.avgPrice}
+                ₹{stats?.avgPrice}
               </div>
               <div className="caption text-muted-foreground mt-1">Price per Service</div>
             </div>

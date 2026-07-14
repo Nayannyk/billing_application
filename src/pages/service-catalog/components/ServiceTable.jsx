@@ -110,11 +110,11 @@ const ServiceTable = ({
               </td>
               <td className="p-4">
                 <div className="font-body font-semibold text-foreground data-text">
-                  ${service?.price?.toFixed(2)}
+                  ₹{service?.price?.toFixed(2)}
                 </div>
                 {service?.priceRange && (
                   <div className="caption text-muted-foreground mt-1">
-                    ${service?.priceRange?.min} - ${service?.priceRange?.max}
+                    ₹{service?.priceRange?.min} - ₹{service?.priceRange?.max}
                   </div>
                 )}
               </td>

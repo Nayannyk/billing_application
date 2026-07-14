@@ -52,11 +52,11 @@ const ServiceCard = ({ service, onEdit, onDuplicate, onToggleStatus }) => {
         <div className="flex items-baseline justify-between pt-2 border-t border-border">
           <div>
             <div className="font-heading font-bold text-foreground text-xl data-text">
-              ${service?.price?.toFixed(2)}
+              ₹{service?.price?.toFixed(2)}
             </div>
             {service?.priceRange && (
               <div className="caption text-muted-foreground mt-0.5">
-                Range: ${service?.priceRange?.min} - ${service?.priceRange?.max}
+                Range: ₹{service?.priceRange?.min} - ₹{service?.priceRange?.max}
               </div>
             )}
           </div>

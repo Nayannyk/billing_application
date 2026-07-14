@@ -11,7 +11,7 @@ const DiscountModal = ({ isOpen, onClose, onApply, subtotal }) => {
 
   const discountTypeOptions = [
     { value: 'percentage', label: 'Percentage (%)' },
-    { value: 'fixed', label: 'Fixed Amount ($)' },
+    { value: 'fixed', label: 'Fixed Amount (₹)' },
   ];
 
   const calculateDiscount = () => {
@@ -118,13 +118,13 @@ const DiscountModal = ({ isOpen, onClose, onApply, subtotal }) => {
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
                   <span className="text-foreground data-text font-medium">
-                    ${subtotal?.toFixed(2)}
+                    ₹{subtotal?.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-success">Discount</span>
                   <span className="text-success data-text font-medium">
-                    -${previewDiscount?.toFixed(2)}
+                    -₹{previewDiscount?.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-border">
@@ -132,7 +132,7 @@ const DiscountModal = ({ isOpen, onClose, onApply, subtotal }) => {
                     New Subtotal
                   </span>
                   <span className="text-base font-heading font-bold text-primary data-text">
-                    ${finalAmount?.toFixed(2)}
+                    ₹{finalAmount?.toFixed(2)}
                   </span>
                 </div>
               </div>

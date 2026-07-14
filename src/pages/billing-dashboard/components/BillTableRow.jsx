@@ -18,7 +18,7 @@ const BillTableRow = ({ bill, onView, onEdit, onShare, onPrint }) => {
         <div className="text-sm text-foreground">{bill?.services}</div>
       </td>
       <td className="px-4 md:px-6 py-4">
-        <div className="font-semibold text-foreground data-text">${bill?.amount}</div>
+        <div className="font-semibold text-foreground data-text">₹{bill?.amount}</div>
       </td>
       <td className="px-4 md:px-6 py-4 hidden md:table-cell">
         <BillStatusBadge status={bill?.status} />
