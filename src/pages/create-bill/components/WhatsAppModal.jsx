@@ -157,13 +157,13 @@ const WhatsAppModal = ({ isOpen, onClose, customer, billData }) => {
       const message = customMessage || generateMessage(customer, billData, formatCurrency);
       const phoneNumber = customer?.phone?.replace(/\D/g, '');
       if (phoneNumber) {
-        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+        window.open(`whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
       }
     } catch (_) {
       const phoneNumber = customer?.phone?.replace(/\D/g, '');
       const message = customMessage || generateMessage(customer, billData, formatCurrency);
       if (phoneNumber) {
-        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+        window.open(`whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
       }
     }
     setSending(false);

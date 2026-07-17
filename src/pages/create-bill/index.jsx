@@ -237,7 +237,7 @@ const CreateBill = () => {
 
     const phone = customerData?.phone?.replace(/\D/g, '');
     if (phone) {
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+      window.open(`whatsapp://send?phone=${phone}&text=${encodeURIComponent(message)}`, '_blank');
     }
 
     setSaving(false);
