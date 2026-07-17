@@ -2,6 +2,12 @@ import React from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import LogoImg from '/assets/images/Logo.png';
+import PaymentQR from '/assets/images/PaymentQR.jpeg';
+
+const titleCase = (str) => {
+  if (!str) return str;
+  return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
+};
 
 const BillPreview = ({
   services,
@@ -58,12 +64,14 @@ const BillPreview = ({
           <div className="space-y-2 text-sm">
             <div className="flex items-center gap-2">
               <Icon name="User" size={16} className="text-muted-foreground" />
-              <span className="text-foreground">{customer?.name}</span>
+              <span className="text-foreground">{titleCase(customer?.name)}</span>
             </div>
+            {customer?.phone &&
             <div className="flex items-center gap-2">
               <Icon name="Phone" size={16} className="text-muted-foreground" />
               <span className="text-foreground">{customer?.phone}</span>
             </div>
+            }
             {customer?.email &&
           <div className="flex items-center gap-2">
                 <Icon name="Mail" size={16} className="text-muted-foreground" />
@@ -162,6 +170,15 @@ const BillPreview = ({
               {formatCurrency(calculatedTotal)}
             </span>
           </div>
+        </div>
+      }
+      {/* UPI Payment QR */}
+      {services?.length > 0 &&
+      <div className="mt-6 pt-6 border-t border-border text-center">
+          <p className="text-sm font-body font-semibold text-foreground mb-3">
+            Scan to Pay via UPI
+          </p>
+          <img src={PaymentQR} alt="UPI Payment QR Code" className="mx-auto w-40 h-40 object-contain rounded-md border border-border" />
         </div>
       }
       {/* Invoice Footer */}

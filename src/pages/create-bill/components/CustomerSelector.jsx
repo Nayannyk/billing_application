@@ -20,7 +20,7 @@ const CustomerSelector = ({ selectedCustomer, onCustomerChange, onNewCustomer })
   const customerOptions = existingCustomers?.map(customer => ({
     value: customer?.id?.toString(),
     label: customer?.name,
-    description: `${customer?.phone} • ${customer?.visitFrequency || 'New'}`,
+    description: `${customer?.phone ? customer?.phone + ' • ' : ''}${customer?.visitFrequency || 'New'}`,
   }));
 
   const validateNewCustomer = () => {
@@ -30,9 +30,7 @@ const CustomerSelector = ({ selectedCustomer, onCustomerChange, onNewCustomer })
       newErrors.name = 'Customer name is required';
     }
     
-    if (!newCustomer?.phone?.trim()) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^\+?[\d\s\-()]+$/?.test(newCustomer?.phone)) {
+    if (newCustomer?.phone?.trim() && !/^\+?[\d\s\-()]+$/?.test(newCustomer?.phone)) {
       newErrors.phone = 'Please enter a valid phone number';
     }
     
@@ -107,10 +105,12 @@ const CustomerSelector = ({ selectedCustomer, onCustomerChange, onNewCustomer })
           {selectedCustomerData && (
             <div className="mt-4 p-4 bg-muted rounded-md">
               <div className="space-y-2">
+                {selectedCustomerData?.phone && (
                 <div className="flex items-center gap-2 text-sm">
                   <Icon name="Phone" size={16} className="text-muted-foreground" />
                   <span className="text-foreground">{selectedCustomerData?.phone}</span>
                 </div>
+                )}
                 {selectedCustomerData?.email && (
                   <div className="flex items-center gap-2 text-sm">
                     <Icon name="Mail" size={16} className="text-muted-foreground" />
@@ -143,10 +143,10 @@ const CustomerSelector = ({ selectedCustomer, onCustomerChange, onNewCustomer })
             label="Phone Number"
             type="tel"
             placeholder="+1 (555) 123-4567"
+            description="Optional - for WhatsApp receipts"
             value={newCustomer?.phone}
             onChange={(e) => setNewCustomer({ ...newCustomer, phone: e?.target?.value })}
             error={errors?.phone}
-            required
           />
 
           <Input

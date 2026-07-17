@@ -65,10 +65,12 @@ const BillViewModal = ({ bill, onClose, onShare, onPrint }) => {
                     <Icon name="User" size={16} className="text-muted-foreground" />
                     <span className="text-sm text-foreground">{bill?.customerName || 'Walk-in'}</span>
                   </div>
+                  {bill?.customerPhone && (
                   <div className="flex items-center gap-2">
                     <Icon name="Phone" size={16} className="text-muted-foreground" />
-                    <span className="text-sm text-foreground">{bill?.customerPhone || '-'}</span>
+                    <span className="text-sm text-foreground">{bill?.customerPhone}</span>
                   </div>
+                  )}
                   {bill?.customer?.email && (
                     <div className="flex items-center gap-2">
                       <Icon name="Mail" size={16} className="text-muted-foreground" />
