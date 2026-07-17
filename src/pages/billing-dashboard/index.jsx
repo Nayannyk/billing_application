@@ -54,8 +54,9 @@ const BillingDashboard = () => {
   };
 
   const handleShareBill = (bill) => {
-    const message = `Hello ${bill?.customerName},\n\nThank you for visiting Hairverse Unisex Salon!\n\nBill Number: ${bill?.billNumber}\nDate: ${bill?.date}\nTotal Amount: ₹${bill?.amount}\n\nWe look forward to serving you again!`;
-    const whatsappUrl = `https://wa.me/${bill?.customerPhone?.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+    const titleCase = (str) => str?.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()) || str;
+    const message = `Hello ${titleCase(bill?.customerName)},\n\nThank you for visiting Hairverse Unisex Salon!\n\nBill Number: ${bill?.billNumber}\nDate: ${bill?.date}\nTotal Amount: ₹${bill?.amount}\n\nWe look forward to serving you again!`;
+    const whatsappUrl = `whatsapp://send?phone=${bill?.customerPhone?.replace(/\D/g, '')}&text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 

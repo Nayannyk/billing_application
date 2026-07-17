@@ -27,7 +27,7 @@ const Login = () => {
                 </div>
                 <span className="text-xs caption text-muted-foreground">@hairverse.salon</span>
               </a>
-              <a href="https://wa.me/917559377506" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 transition-smooth hover:opacity-80">
+              <a href="whatsapp://send?phone=917559377506" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 transition-smooth hover:opacity-80">
                 <div className="w-16 h-16 rounded-lg overflow-hidden bg-white p-1">
                   <img src={WhatsAppQrImg} alt="WhatsApp" className="w-full h-full object-contain" />
                 </div>

@@ -32,9 +32,7 @@ const CustomerForm = ({ customer, onClose, onSave }) => {
       newErrors.name = 'Customer name is required';
     }
 
-    if (!formData?.phone?.trim()) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^\+?[\d\s-()]+$/?.test(formData?.phone)) {
+    if (formData?.phone?.trim() && !/^\+?[\d\s-()]+$/?.test(formData?.phone)) {
       newErrors.phone = 'Invalid phone number format';
     }
 
@@ -125,8 +123,7 @@ const CustomerForm = ({ customer, onClose, onSave }) => {
                 value={formData?.phone}
                 onChange={handleChange}
                 error={errors?.phone}
-                description="WhatsApp-compatible number"
-                required
+                description="Optional - WhatsApp-compatible number"
               />
 
               <Input

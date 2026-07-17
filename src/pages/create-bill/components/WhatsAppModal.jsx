@@ -5,6 +5,12 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import LogoImg from '/assets/images/Logo.png';
+import PaymentQR from '/assets/images/PaymentQR.jpeg';
+
+const titleCase = (str) => {
+  if (!str) return str;
+  return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
+};
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('en-IN', {
@@ -34,8 +40,8 @@ const BillTemplate = React.forwardRef(({ customer, services, subtotal, discount,
       <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid #E5E7EB' }}>
         <h4 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 600, fontFamily: 'Arial, sans-serif' }}>Customer Details</h4>
         <div style={{ fontSize: '13px', lineHeight: '1.8' }}>
-          <p style={{ margin: 0 }}>{customer.name}</p>
-          <p style={{ margin: 0 }}>{customer.phone}</p>
+          <p style={{ margin: 0 }}>{titleCase(customer.name)}</p>
+          {customer.phone && <p style={{ margin: 0 }}>{customer.phone}</p>}
           {customer.email && <p style={{ margin: 0 }}>{customer.email}</p>}
           {stylist && <p style={{ margin: 0, fontWeight: 600 }}>Stylist: {stylist}</p>}
         </div>
@@ -96,6 +102,10 @@ const BillTemplate = React.forwardRef(({ customer, services, subtotal, discount,
 
     {/* Footer */}
     <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #E5E7EB', textAlign: 'center' }}>
+      <p style={{ margin: '0 0 8px', fontSize: '12px', fontWeight: 600, color: '#1F2937' }}>Scan to Pay via UPI</p>
+      <img src={PaymentQR} alt="UPI QR" style={{ width: '140px', height: '140px', objectFit: 'contain', borderRadius: '8px', border: '1px solid #E5E7EB' }} />
+    </div>
+    <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #E5E7EB', textAlign: 'center' }}>
       <p style={{ margin: 0, fontSize: '11px', color: '#6B7280' }}>Thank you for choosing Hairverse Unisex Salon!</p>
       <p style={{ margin: '4px 0 0', fontSize: '11px', color: '#6B7280' }}>
         Invoice generated on {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -106,7 +116,7 @@ const BillTemplate = React.forwardRef(({ customer, services, subtotal, discount,
 
 const generateMessage = (customer, billData, formatCurrency) => {
   const header = `*Hairverse Unisex Salon Invoice*\n\n`;
-  const customerInfo = `Dear ${customer?.name || 'Customer'},\n\nThank you for visiting us!\n\n`;
+  const customerInfo = `Dear ${titleCase(customer?.name) || 'Customer'},\n\nThank you for visiting us!\n\n`;
   
   const services = billData?.services?.map((service, index) => 
     `${index + 1}. ${service?.name}\n   Qty: ${service?.quantity} × ${formatCurrency(service?.price)} = ${formatCurrency(service?.total)}`
@@ -157,13 +167,13 @@ const WhatsAppModal = ({ isOpen, onClose, customer, billData }) => {
       const message = customMessage || generateMessage(customer, billData, formatCurrency);
       const phoneNumber = customer?.phone?.replace(/\D/g, '');
       if (phoneNumber) {
-        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+        window.open(`whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
       }
     } catch (_) {
       const phoneNumber = customer?.phone?.replace(/\D/g, '');
       const message = customMessage || generateMessage(customer, billData, formatCurrency);
       if (phoneNumber) {
-        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+        window.open(`whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
       }
     }
     setSending(false);
